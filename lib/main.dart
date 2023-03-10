@@ -6,8 +6,11 @@ import 'package:osar_pasar/utils/theme.dart';
 
 import 'controller/core_controller.dart';
 import 'controller/home_controller.dart';
+import 'controller/item_controller.dart';
 
 void main() {
+  final a = Get.lazyPut(() => ItemController());
+
   Get.put(HomeController());
   runApp(const MyApp());
 }

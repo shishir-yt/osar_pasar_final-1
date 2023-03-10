@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/controller/item_controller.dart';
 import 'package:osar_pasar/screens/item.dart';
 
 import '../controller/service_provider_controller.dart';
@@ -8,7 +9,6 @@ import '../utils/colors.dart';
 
 class ServiceProviderScreen extends StatelessWidget {
   ServiceProviderScreen({super.key});
-
   final c = Get.put(ServiceProviderController());
   @override
   Widget build(BuildContext context) {
@@ -59,6 +59,7 @@ class ServiceProviderScreen extends StatelessWidget {
                           readingTitle: serviceProvider.name!.toString(),
                           readingMaterial: serviceProvider.email!.toString(),
                           phoneNumber: "",
+                          serviceProvider: serviceProvider,
                         );
                       },
                     ),
@@ -71,25 +72,30 @@ class ServiceProviderScreen extends StatelessWidget {
 }
 
 class MaterialListCard extends StatelessWidget {
-  const MaterialListCard({
+  MaterialListCard({
     Key? key,
     required this.readingTitle,
     required this.readingMaterial,
     required this.phoneNumber,
     required this.imgUrl,
+    required this.serviceProvider,
   }) : super(key: key);
 
   final String readingTitle;
   final String readingMaterial;
   final String phoneNumber;
   final String imgUrl;
+  ServiceProvider serviceProvider;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 19, right: 19, top: 20),
       child: InkWell(
-        onTap: (() => Get.to(() => ItemAddScreen())),
+        onTap: () {
+          ItemController().getAllCatgegory(serviceProvider.id ?? 0);
+          Get.to(() => ItemAddScreen(serviceProvider: serviceProvider));
+        },
         child: Container(
           // height: 96,
           decoration: BoxDecoration(
@@ -107,7 +113,12 @@ class MaterialListCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: (() => Get.to(() => ItemAddScreen())),
+                onTap: () {
+                  // ItemController().getAllCatgegory(serviceProvider.id)
+                  Get.to(() => ItemAddScreen(
+                        serviceProvider: serviceProvider,
+                      ));
+                },
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),

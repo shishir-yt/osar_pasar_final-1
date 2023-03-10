@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/controller/item_controller.dart';
 import 'package:osar_pasar/screens/home.dart';
 import 'package:osar_pasar/screens/auth/login.dart';
 import '../controller/core_controller.dart';
@@ -26,6 +27,7 @@ class VideoState extends State<SplashScreen>
   // final coreController = Get.find<CoreController>();
 
   final coreController = Get.put(CoreController());
+
   startTime() async {
     var duration = const Duration(seconds: 4);
     return Timer(duration, navigationPage);

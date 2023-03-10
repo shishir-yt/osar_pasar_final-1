@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osar_pasar/controller/item_controller.dart';
-import 'package:osar_pasar/models/category.dart';
+import 'package:osar_pasar/models/service_provider.dart';
+import 'package:osar_pasar/screens/item_list.dart';
+
 import '../utils/colors.dart';
 
 class ItemAddScreen extends StatelessWidget {
-  ItemAddScreen({super.key});
+  ItemAddScreen({super.key, required this.serviceProvider});
+  ServiceProvider serviceProvider;
 
-  final c = Get.put(ItemController());
   @override
   Widget build(BuildContext context) {
+    // final c = Get.find<ItemController>();
+
     var textTheme = Theme.of(Get.context!).textTheme;
     var theme = Theme.of(Get.context!);
     return Scaffold(
@@ -51,10 +55,9 @@ class ItemAddScreen extends StatelessWidget {
         ),
         centerTitle: false,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
+      body: GetX<ItemController>(builder: (c) {
+        if (c.selectedItems.isEmpty)
+          return Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 35, left: 35),
               child: ElevatedButton(
@@ -68,7 +71,9 @@ class ItemAddScreen extends StatelessWidget {
                   backgroundColor: Colors.white,
                   minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: c.showCategory,
+                onPressed: () {
+                  c.showCategory();
+                },
                 child: Text(
                   "Add Item",
                   style: textTheme.titleMedium!
@@ -76,10 +81,17 @@ class ItemAddScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          
-        ],
-      ),
+          );
+        else
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: c.selectedItems.value.map((e) {
+              return Container(
+                child: Text("${e.name}"),
+              );
+            }).toList(),
+          );
+      }),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(bottom: 46, right: 35, left: 35),
         child: ElevatedButton(
@@ -89,7 +101,9 @@ class ItemAddScreen extends StatelessWidget {
             backgroundColor: const Color(0xff00183F),
             minimumSize: const Size.fromHeight(50),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Get.to(ItemList());
+          },
           child: const Text(
             "Continue",
           ),
