@@ -7,12 +7,20 @@ import 'package:osar_pasar/utils/validators.dart';
 import '../../controller/auth/register_controller.dart';
 import '../../widgets/custom_text_field.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   Register({super.key});
   static const routeName = "/register";
-  final c = Get.put(RegisterController());
-  // final formKey = GlobalKey<FormState>();
 
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final c = Get.put(RegisterController());
+
+  bool visiblePassword = false;
+
+  // final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +107,17 @@ class Register extends StatelessWidget {
                         hint: 'Enter your password',
                         textInputType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,
-                        obscure: true,
+                        obscure: !visiblePassword,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              visiblePassword = !visiblePassword;
+                            });
+                          },
+                          icon: Icon(visiblePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
                         validator: Validators.checkPasswordField,
                       ),
                       // Obx(

@@ -1,10 +1,13 @@
 import 'dart:developer';
+
 import 'package:get/get.dart';
 
 import '../models/service_provider.dart';
 import '../repo/service_provider_repo.dart';
 
 class ServiceProviderController extends GetxController {
+  final selectedServiceProvider = ServiceProvider().obs;
+
   RxList<ServiceProvider> serviceProviders = RxList();
   RxBool loading = false.obs;
   @override

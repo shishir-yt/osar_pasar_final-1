@@ -11,7 +11,7 @@ class CategoryRepo {
       required Function(String message) onError,
       required int id}) async {
     // try {
-    var url = Uri.parse("http://172.16.17.213:8000/api/categories/$id");
+    var url = Uri.parse("http://192.168.1.71:8000/api/categories/$id");
     var headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",

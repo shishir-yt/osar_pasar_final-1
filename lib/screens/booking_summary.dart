@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/controller/item_controller.dart';
+import 'package:osar_pasar/controller/service_provider_controller.dart';
+import 'package:osar_pasar/screens/request.dart';
 import 'package:osar_pasar/widgets/custom_text_field.dart';
 
 import '../utils/colors.dart';
@@ -10,6 +13,8 @@ class BookingSummary extends StatelessWidget {
   String to;
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
+  final itemController = Get.find<ItemController>();
+  final serviceController = Get.find<ServiceProviderController>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,56 +52,61 @@ class BookingSummary extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 26),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Packers and Movers Name"),
-            const Text("serviceprovider@gmail.com"),
-            const SizedBox(
-              height: 27,
-            ),
-            CustomTextField(
-              readOnly: true,
-              // initial: "Street No-7, Lakeside, Pokhara",
-              controller: fromController,
-            ),
-            const SizedBox(
-              height: 9,
-            ),
-            const Center(child: Text("To")),
-            const SizedBox(
-              height: 9,
-            ),
-            CustomTextField(
-              readOnly: true,
-              // initial: "Street No-7, Lakeside, Pokhara",
-              controller: toController,
-            ),
-            const SizedBox(
-              height: 27,
-            ),
-            const Text("Item Summary"),
-            const SizedBox(
-              height: 7,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 26),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(" ${serviceController.selectedServiceProvider.value.name}"),
+              // const Text("serviceprovider@gmail.com"),
+              const SizedBox(
+                height: 27,
+              ),
+              CustomTextField(
+                readOnly: true,
+                // initial: "Street No-7, Lakeside, Pokhara",
+                controller: fromController,
+              ),
+              const SizedBox(
+                height: 9,
+              ),
+              const Center(child: Text("To")),
+              const SizedBox(
+                height: 9,
+              ),
+              CustomTextField(
+                readOnly: true,
+                // initial: "Street No-7, Lakeside, Pokhara",
+                controller: toController,
+              ),
+              const SizedBox(
+                height: 27,
+              ),
+              const Text("Item Summary"),
+              const SizedBox(
+                height: 7,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: itemController.selectedItems.value.map((e) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Item Summary"),
-                        Text("1"),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(e.name ?? ""),
+                        ),
+                        Text(e.itemCount.toString()),
                       ],
                     );
-                  }),
-            )
-          ],
+                  }).toList(),
+                ),
+              )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -109,7 +119,17 @@ class BookingSummary extends StatelessWidget {
             minimumSize: const Size.fromHeight(50),
           ),
           onPressed: () {
-            // (() => Get.to(() => AddressPage()))
+            Get.snackbar(
+              'Request Sent Successfully',
+              'We will get back to you soon!',
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
+
+            Get.to(
+              () => RequestScreen(),
+            );
           },
           child: const Text("Send Request"),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/screens/auth/login.dart';
 import 'package:osar_pasar/screens/splash_screen.dart';
 import 'package:osar_pasar/utils/pages.dart';
 import 'package:osar_pasar/utils/theme.dart';
@@ -7,6 +8,14 @@ import 'package:osar_pasar/utils/theme.dart';
 import 'controller/core_controller.dart';
 import 'controller/home_controller.dart';
 import 'controller/item_controller.dart';
+
+// void main() {
+//   runApp(
+//     GetMaterialApp(
+//       home: Login(),
+//     ),
+//   );
+// }
 
 void main() {
   final a = Get.lazyPut(() => ItemController());

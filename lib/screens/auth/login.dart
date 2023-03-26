@@ -8,12 +8,20 @@ import 'package:osar_pasar/screens/auth/register.dart';
 import '../../utils/validators.dart';
 import '../../widgets/custom_text_field.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   static const routeName = "/loginScreen";
   Login({super.key});
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final c = Get.put(LoginController());
+
   var keys = GlobalKey<FormState>();
+
+  bool visiblePassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +83,7 @@ class Login extends StatelessWidget {
                       ),
                       CustomTextField(
                         controller: c.passwordTextController,
+
                         // prefixIcon: const Icon(
                         //   Icons.person,
                         //   size: 20,
@@ -90,7 +99,17 @@ class Login extends StatelessWidget {
                         hint: "Enter your password ",
                         textInputAction: TextInputAction.next,
                         textInputType: TextInputType.emailAddress,
-                        obscure: true,
+                        obscure: !visiblePassword,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              visiblePassword = !visiblePassword;
+                            });
+                          },
+                          icon: Icon(visiblePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.topRight,

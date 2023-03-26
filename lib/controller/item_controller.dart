@@ -9,13 +9,14 @@ import '../repo/category_repo.dart';
 class ItemController extends GetxController {
   final category = <CategoryItem>[].obs;
   final items = <Items>[].obs;
-  final selectedItems = <Items>[].obs;
+  final selectedItems = <Items>{}.obs;
 
   final selectedCategory = CategoryItem().obs;
   RxBool loading = false.obs;
   String name = "";
   final selectedItem = Items().obs;
   getAllCatgegory(int id) async {
+    Get.put(ItemController());
     final categoryContoller = Get.find<ItemController>();
 
     log("yhea samma aayo ");
@@ -33,6 +34,19 @@ class ItemController extends GetxController {
         });
 
     log("data length:- ${category.length}");
+  }
+
+  RxInt counter = 1.obs;
+
+  void incrementValue() {
+    counter.value++;
+  }
+
+  void substractValue() {
+    if (counter.value <= 1) {
+      return;
+    }
+    counter.value--;
   }
 
   showCategory() {
@@ -186,6 +200,9 @@ class ItemController extends GetxController {
                           minimumSize: const Size.fromHeight(50),
                         ),
                         onPressed: () {
+                          selectedItems.value.add(selectedItem.value);
+                          selectedItems.refresh();
+                          Get.back();
                           log(name.toString());
                         },
                         child: const Text("Continue"),

@@ -55,6 +55,7 @@ class Items {
   int? serviceProviderId;
   int? categoryId;
   String? name;
+  int itemCount = 1;
   String? createdAt;
   String? updatedAt;
 
@@ -64,7 +65,9 @@ class Items {
       this.categoryId,
       this.name,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.itemCount = 1,
+      });
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'];

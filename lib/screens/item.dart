@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:osar_pasar/controller/item_controller.dart';
 import 'package:osar_pasar/models/service_provider.dart';
-import 'package:osar_pasar/screens/item_list.dart';
+import 'package:osar_pasar/screens/address.dart';
 
 import '../utils/colors.dart';
 
@@ -12,7 +13,7 @@ class ItemAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final c = Get.find<ItemController>();
+    final c = Get.find<ItemController>();
 
     var textTheme = Theme.of(Get.context!).textTheme;
     var theme = Theme.of(Get.context!);
@@ -37,7 +38,9 @@ class ItemAddScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                c.showCategory();
+              },
               child: const Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: Icon(
@@ -56,7 +59,7 @@ class ItemAddScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: GetX<ItemController>(builder: (c) {
-        if (c.selectedItems.isEmpty)
+        if (c.selectedItems.isEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 35, left: 35),
@@ -82,15 +85,54 @@ class ItemAddScreen extends StatelessWidget {
               ),
             ),
           );
-        else
+        } else {
           return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: c.selectedItems.value.map((e) {
-              return Container(
-                child: Text("${e.name}"),
-              );
+              return Padding(
+                  padding: const EdgeInsets.only(left: 30, top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("${e.name}"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                if (e.itemCount > 1) {
+                                  e.itemCount--;
+                                  c.selectedItems.refresh();
+                                } else {
+                                  c.selectedItems.value.remove(e);
+                                  c.selectedItems.refresh();
+                                }
+                              },
+                            ),
+                          ),
+                          Text("${e.itemCount}"),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                if (e.itemCount < 10) {
+                                  e.itemCount++;
+                                  c.selectedItems.refresh();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ));
             }).toList(),
           );
+        }
       }),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(bottom: 46, right: 35, left: 35),
@@ -102,7 +144,7 @@ class ItemAddScreen extends StatelessWidget {
             minimumSize: const Size.fromHeight(50),
           ),
           onPressed: () {
-            Get.to(ItemList());
+            Get.to(AddressPage());
           },
           child: const Text(
             "Continue",

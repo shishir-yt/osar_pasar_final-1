@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/utils/colors.dart';
 
 import '../utils/image_path.dart';
 
@@ -8,6 +11,8 @@ class ActiveBooking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(Get.context!).textTheme;
+    var theme = Theme.of(Get.context!);
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -25,9 +30,10 @@ class ActiveBooking extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text(
+        title: Text(
           "Active Booking",
-          style: TextStyle(color: Colors.black, fontSize: 15),
+          style: textTheme.titleLarge!
+              .copyWith(fontSize: 16, color: AppColors.textColor),
         ),
         centerTitle: false,
       ),

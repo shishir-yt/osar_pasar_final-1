@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/models/item_model.dart';
 import 'package:osar_pasar/models/provinces.dart';
 import 'package:osar_pasar/widgets/custom_text_field.dart';
 
@@ -269,7 +270,7 @@ class _AddressPageState extends State<AddressPage> {
                                       .toList(),
                                 ),
                               ),
-                             
+
                               const SizedBox(
                                 height: 15,
                               ),
@@ -546,6 +547,16 @@ class _AddressPageState extends State<AddressPage> {
                     to: destinationAddressController.text,
                   ))),
               child: const Text("Continue"),
+            ),
+            SizedBox(height: 50),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff00183F),
+                minimumSize: const Size.fromHeight(50),
+              ),
+              onPressed: () {},
+              child: Text("Testing"),
             ),
           ],
         ),

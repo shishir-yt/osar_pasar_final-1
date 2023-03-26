@@ -89,10 +89,14 @@ class MaterialListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = Get.put(ServiceProviderController());
+
     return Padding(
       padding: const EdgeInsets.only(left: 19, right: 19, top: 20),
       child: InkWell(
         onTap: () {
+          c.selectedServiceProvider.value = serviceProvider;
+
           ItemController().getAllCatgegory(serviceProvider.id ?? 0);
           Get.to(() => ItemAddScreen(serviceProvider: serviceProvider));
         },
@@ -114,6 +118,7 @@ class MaterialListCard extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
+                  c.selectedServiceProvider.value = serviceProvider;
                   // ItemController().getAllCatgegory(serviceProvider.id)
                   Get.to(() => ItemAddScreen(
                         serviceProvider: serviceProvider,

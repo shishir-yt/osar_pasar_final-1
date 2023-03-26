@@ -1,6 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:osar_pasar/screens/about.dart';
+import 'package:osar_pasar/screens/auth/login.dart';
+import 'package:osar_pasar/screens/faq.dart';
+import 'package:osar_pasar/utils/storage_keys.dart';
 import '../utils/image_path.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -83,7 +88,9 @@ class MyDrawer extends StatelessWidget {
                 DrawerItem(
                   icon: Icons.question_mark_outlined,
                   label: 'FAQ',
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(FaqPage());
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -91,7 +98,18 @@ class MyDrawer extends StatelessWidget {
                 DrawerItem(
                   icon: Icons.info_outline,
                   label: 'About',
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(AboutPage(
+                      appDescription:
+                          'Welcome to Osar Pasar, a leading packers and movers company based in Nepal. We are a team of experienced professionals dedicated to providing top-notch packing and moving services to our clients.\n \n'
+                          'Our company was established with a vision to simplify the process of shifting and relocating for individuals and businesses alike. We understand that moving can be a stressful and overwhelming experience, which is why we strive to make the process as smooth and hassle-free as possible.At Osar Pasar, we pride ourselves on our commitment to customer satisfaction. We work closely with our clients to understand their specific needs and requirements, and tailor our services accordingly.'
+                          'Whether you are moving locally or across the country, we have the expertise and resources to ensure a safe and timely relocation.Our team of packers and movers are highly trained and experienced in handling all types of goods, including fragile and valuable items. We use only the best quality packing materials to ensure that your belongings are safe and secure during transit.In addition to our packing and moving services, we also offer storage solutions for those who need to temporarily store their belongings.'
+                          'Our storage facilities are clean, secure, and equipped with advanced security systems to ensure the safety of your goods.At Osar Pasar, we are committed to providing affordable and reliable packing and moving services to our clients. We believe in transparency and honesty in all our dealings, and strive to build long-term relationships with our clients based on trust and mutual respect.',
+                      appDeveloperName: 'Shishir Acharya',
+                      appName: 'Osar Pasar',
+                      appVersion: 'Alpha Testing v0.0.1',
+                    ));
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -99,7 +117,14 @@ class MyDrawer extends StatelessWidget {
                 DrawerItem(
                   icon: Icons.logout,
                   label: 'Logout',
-                  onPressed: () {},
+                  onPressed: () async{
+                   
+                      final box = GetStorage();
+                      await box.write(StorageKey.ACCESS_TOKEN, null);
+                      await box.write(StorageKey.USER, null);
+                      Get.offAllNamed(Login.routeName);
+                    
+                  },
                 ),
               ],
             ),
