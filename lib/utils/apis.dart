@@ -5,4 +5,5 @@ class Api {
   static String login = "$baseUrl/login";
   static String serviceProvider = "$baseUrl/service-providers";
   static String provinces = "$baseUrl/provinces-address";
+  static String paymentCheckURL = "$baseUrl/complete-request";
 }

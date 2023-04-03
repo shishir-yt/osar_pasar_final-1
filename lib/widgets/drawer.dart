@@ -99,7 +99,7 @@ class MyDrawer extends StatelessWidget {
                   icon: Icons.info_outline,
                   label: 'About',
                   onPressed: () {
-                    Get.to(AboutPage(
+                    Get.to(const AboutPage(
                       appDescription:
                           'Welcome to Osar Pasar, a leading packers and movers company based in Nepal. We are a team of experienced professionals dedicated to providing top-notch packing and moving services to our clients.\n \n'
                           'Our company was established with a vision to simplify the process of shifting and relocating for individuals and businesses alike. We understand that moving can be a stressful and overwhelming experience, which is why we strive to make the process as smooth and hassle-free as possible.At Osar Pasar, we pride ourselves on our commitment to customer satisfaction. We work closely with our clients to understand their specific needs and requirements, and tailor our services accordingly.'
@@ -107,7 +107,7 @@ class MyDrawer extends StatelessWidget {
                           'Our storage facilities are clean, secure, and equipped with advanced security systems to ensure the safety of your goods.At Osar Pasar, we are committed to providing affordable and reliable packing and moving services to our clients. We believe in transparency and honesty in all our dealings, and strive to build long-term relationships with our clients based on trust and mutual respect.',
                       appDeveloperName: 'Shishir Acharya',
                       appName: 'Osar Pasar',
-                      appVersion: 'Alpha Testing v0.0.1',
+                      appVersion: 'v1.0.0',
                     ));
                   },
                 ),
@@ -117,13 +117,11 @@ class MyDrawer extends StatelessWidget {
                 DrawerItem(
                   icon: Icons.logout,
                   label: 'Logout',
-                  onPressed: () async{
-                   
-                      final box = GetStorage();
-                      await box.write(StorageKey.ACCESS_TOKEN, null);
-                      await box.write(StorageKey.USER, null);
-                      Get.offAllNamed(Login.routeName);
-                    
+                  onPressed: () async {
+                    final box = GetStorage();
+                    await box.write(StorageKey.ACCESS_TOKEN, null);
+                    await box.write(StorageKey.USER, null);
+                    Get.offAllNamed(Login.routeName);
                   },
                 ),
               ],

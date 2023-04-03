@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../utils/colors.dart';
 
 class FaqPage extends StatelessWidget {
   const FaqPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(Get.context!).textTheme;
+    var theme = Theme.of(Get.context!);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FAQ'),
+        title: Text(
+          'FAQ',
+          style: textTheme.titleLarge!.copyWith(
+              fontSize: 18, color: Color.fromARGB(255, 255, 255, 255)),
+        ),
       ),
       body: ListView(
         children: [
@@ -28,7 +38,6 @@ class FaqPage extends StatelessWidget {
             question: 'What payment methods do you accept?',
             answer: 'We accept...',
           ),
-          // Add more FAQ items here
         ],
       ),
     );
@@ -54,7 +63,9 @@ class _FaqItemState extends State<FaqItem> {
       title: Text(widget.question),
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
           child: Text(widget.answer),
         ),
       ],

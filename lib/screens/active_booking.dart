@@ -1,10 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:osar_pasar/repo/payment_repo.dart';
 import 'package:osar_pasar/utils/colors.dart';
+import 'package:osar_pasar/utils/storage_helper.dart';
 
+import '../models/access_token.dart';
 import '../utils/image_path.dart';
+import '../utils/snackbar.dart';
 
 class ActiveBooking extends StatelessWidget {
   const ActiveBooking({super.key});
@@ -44,7 +51,7 @@ class ActiveBooking extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            height: 136,
+            height: 165,
             margin: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 26),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -68,6 +75,13 @@ class ActiveBooking extends StatelessWidget {
                     height: 10,
                   ),
                   const Text(
+                    "Rs.2500",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
                     "12th Jan 2023, 01:00 PM",
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
@@ -75,11 +89,15 @@ class ActiveBooking extends StatelessWidget {
                     height: 10,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-                    child: const Text("Active"),
-                  )
+                      onPressed: () {
+                        paywithKhaltiInApp();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 76, 21, 184)),
+                      child: const Text(
+                        "Pay with Khalti",
+                      )),
+                  // Text(referenceId),
                 ],
               ),
             ),
@@ -88,4 +106,37 @@ class ActiveBooking extends StatelessWidget {
       ),
     );
   }
+}
+
+paywithKhaltiInApp() {
+  KhaltiScope.of(Get.context!).pay(
+    config: PaymentConfig(
+        amount: 1000,
+        productIdentity: "Product ID",
+        productName: "Product Name"),
+    preferences: [PaymentPreference.khalti],
+    onSuccess: onSuccess,
+    onFailure: onFailure,
+    onCancel: onCancel,
+  );
+}
+
+void onSuccess(PaymentSuccessModel result) {
+  PaymentRepo.verifyKhaltiPayment(
+    // service_provider_id: ,
+    idx: result.idx,
+    amount: "10",
+    token: result.token,
+    onError: (message) {
+      log("Error Message");
+    },
+  );
+}
+
+void onFailure(PaymentFailureModel failure) {
+  debugPrint(failure.toString());
+}
+
+void onCancel() {
+  debugPrint("Cancelled");
 }

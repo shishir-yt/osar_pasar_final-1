@@ -1,15 +1,24 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osar_pasar/controller/item_controller.dart';
 import 'package:osar_pasar/models/item_model.dart';
 import 'package:osar_pasar/models/provinces.dart';
+import 'package:osar_pasar/models/service_provider.dart';
+import 'package:osar_pasar/utils/storage_helper.dart';
 import 'package:osar_pasar/widgets/custom_text_field.dart';
 
 import '../controller/address_controller.dart';
 import '../utils/colors.dart';
 import 'booking_summary.dart';
 
+import 'package:http/http.dart' as http;
+
 class AddressPage extends StatefulWidget {
-  AddressPage({super.key});
+  AddressPage({super.key, required this.serviceProvider});
+  ServiceProvider serviceProvider;
 
   @override
   State<AddressPage> createState() => _AddressPageState();
@@ -17,6 +26,7 @@ class AddressPage extends StatefulWidget {
 
 class _AddressPageState extends State<AddressPage> {
   final addressController = Get.put(AddressController());
+  final itemController = Get.put(ItemController());
   TextEditingController streetAddressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
 
@@ -555,12 +565,67 @@ class _AddressPageState extends State<AddressPage> {
                 backgroundColor: const Color(0xff00183F),
                 minimumSize: const Size.fromHeight(50),
               ),
-              onPressed: () {},
+              onPressed: () {
+                var test = item_model(
+                  itemId: itemController.selectedItems.map((element) {
+                    return ItemId(id: element.id, quantity: element.itemCount);
+                  }).toList(),
+                  serviceProviderId: widget.serviceProvider.id,
+                  pickupAddress: pickupAddressController.text,
+                  destinationAddress: destinationAddressController.text,
+                  pickupDate: dateController.text,
+                  pickupTime: timeController.text,
+                ).toJson();
+                print(test);
+
+                postOrder(
+                    test: test,
+                    onSuccess: () {
+                      print("error 1234");
+                    },
+                    onError: (message) {
+                      print("error");
+                    });
+              },
               child: Text("Testing"),
             ),
           ],
         ),
       ),
     );
+  }
+
+  static Future<void> postOrder(
+      {required var test,
+      required Function() onSuccess,
+      required Function(String message) onError}) async {
+    try {
+      var url = Uri.parse("http://192.168.1.71:8000/api/orders/store");
+
+      var body = json.encode(test);
+
+      http.Response response = await http.post(url,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": StorageHelper.getToken()!.toString()
+          },
+          body: body);
+
+      var data = json.decode(response.body);
+
+      log("TESTING DATA =====> ${data}");
+      log("TESTING DATA =====> ${body}");
+      if (data['status']) {
+        onSuccess();
+        // print(data.toString());
+      } else {
+        onError("String message");
+      }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      onError("Sorry something went wrong. Please try again");
+    }
   }
 }

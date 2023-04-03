@@ -40,55 +40,55 @@ class RequestScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: SizedBox(
           child: ListView.builder(
-              itemCount: 5,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          width: 0.5,
-                          color: Color.fromARGB(255, 222, 222, 222)),
+            itemCount: 1,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 0.5, color: Color.fromARGB(255, 222, 222, 222)),
+                  ),
+                ),
+                // padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Text(
+                          "Today",
+                          style: TextStyle(color: Colors.black, fontSize: 12),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "Service Provider’s Name",
+                              style: TextStyle(
+                                  color: Colors.black45, fontSize: 14),
+                            ),
+                            Text(
+                              "PENDING",
+                              style: TextStyle(
+                                  color: Color.fromARGB(204, 255, 128, 0),
+                                  fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                  // padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Text(
-                            "Today",
-                            style: TextStyle(color: Colors.black, fontSize: 12),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Service Provider’s Name",
-                                style: TextStyle(
-                                    color: Colors.black45, fontSize: 14),
-                              ),
-                              Text(
-                                "PENDING",
-                                style: TextStyle(
-                                    color: Color.fromARGB(204, 255, 128, 0),
-                                    fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SvgPicture.asset(AllImages.waiting),
-                    ],
-                  ),
-                );
-              }),
+                    SvgPicture.asset(AllImages.waiting),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

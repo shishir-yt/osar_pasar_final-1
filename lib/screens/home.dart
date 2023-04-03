@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:osar_pasar/controller/home_controller.dart';
 import 'package:osar_pasar/screens/active_booking.dart';
+import 'package:osar_pasar/screens/notification_page.dart';
 import 'package:osar_pasar/screens/request.dart';
 import 'package:osar_pasar/screens/service_providers.dart';
 import 'package:osar_pasar/utils/colors.dart';
@@ -41,7 +42,11 @@ class HomePage extends StatelessWidget {
         elevation: 3,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(NotificationPage(
+                notificationMessage: 'You received a new notification',
+              ));
+            },
             icon: const Icon(Icons.notifications_outlined),
           ),
         ],

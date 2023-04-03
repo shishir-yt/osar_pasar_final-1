@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:osar_pasar/screens/auth/login.dart';
 import 'package:osar_pasar/screens/splash_screen.dart';
 import 'package:osar_pasar/utils/pages.dart';
 import 'package:osar_pasar/utils/theme.dart';
-
 import 'controller/core_controller.dart';
 import 'controller/home_controller.dart';
 import 'controller/item_controller.dart';
-
-// void main() {
-//   runApp(
-//     GetMaterialApp(
-//       home: Login(),
-//     ),
-//   );
-// }
 
 void main() {
   final a = Get.lazyPut(() => ItemController());
@@ -29,17 +21,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CoreController>(
-      init: Get.put(CoreController()),
-      builder: (context) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: basicTheme(),
-          initialRoute: SplashScreen.routeName,
-          initialBinding: BindingsBuilder(() {
-            Get.put(CoreController());
-          }),
-          getPages: [...commonPages, ...userPages],
+    return KhaltiScope(
+      publicKey: 'test_public_key_0484f8952fb94b0d817aeefd670a8ef1',
+      enabledDebugging: true,
+      builder: (context, navigatorKey) {
+        return GetBuilder<CoreController>(
+          init: Get.put(CoreController()),
+          builder: (context) {
+            return GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: basicTheme(),
+              initialRoute: SplashScreen.routeName,
+              navigatorKey: navigatorKey,
+              localizationsDelegates: const [KhaltiLocalizations.delegate],
+              initialBinding: BindingsBuilder(() {
+                Get.put(CoreController());
+              }),
+              getPages: [...commonPages, ...userPages],
+            );
+          },
         );
       },
     );

@@ -144,7 +144,9 @@ class ItemAddScreen extends StatelessWidget {
             minimumSize: const Size.fromHeight(50),
           ),
           onPressed: () {
-            Get.to(AddressPage());
+            Get.to(AddressPage(
+              serviceProvider: serviceProvider,
+            ));
           },
           child: const Text(
             "Continue",

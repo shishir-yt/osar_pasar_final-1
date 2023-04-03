@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   sqflite: ^2.2.0+3
-  khalti: ^1.0.2
+  khalti_flutter: ^2.2.1
   simple_fontellico_progress_dialog: ^0.2.1
   get_storage: ^2.0.3
   http: ^0.13.5

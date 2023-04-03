@@ -96,7 +96,6 @@ class MaterialListCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           c.selectedServiceProvider.value = serviceProvider;
-
           ItemController().getAllCatgegory(serviceProvider.id ?? 0);
           Get.to(() => ItemAddScreen(serviceProvider: serviceProvider));
         },
