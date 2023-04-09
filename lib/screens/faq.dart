@@ -16,7 +16,7 @@ class FaqPage extends StatelessWidget {
         title: Text(
           'FAQ',
           style: textTheme.titleLarge!.copyWith(
-              fontSize: 18, color: Color.fromARGB(255, 255, 255, 255)),
+              fontSize: 16, color: Color.fromARGB(255, 255, 255, 255)),
         ),
       ),
       body: ListView(
@@ -60,13 +60,19 @@ class _FaqItemState extends State<FaqItem> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text(widget.question),
+      title: Text(
+        widget.question,
+        style: TextStyle(fontSize: 16),
+      ),
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
           ),
-          child: Text(widget.answer),
+          child: Text(
+            widget.answer,
+            style: TextStyle(fontSize: 16),
+          ),
         ),
       ],
     );

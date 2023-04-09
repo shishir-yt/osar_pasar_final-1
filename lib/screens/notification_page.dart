@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:osar_pasar/screens/active_booking.dart';
 
 import '../controller/notification_controller.dart';
 import '../models/notification.dart';
@@ -29,17 +30,29 @@ class NotificationPage extends StatelessWidget {
             : Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListView.builder(
-                    itemCount: c.notificationList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      NotificationServiceprovider notification =
-                          c.notificationList[index];
-                      return Text(
-                        notification.data!.note! ?? "",
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 57, 57, 57)),
-                      );
-                    })),
+                  itemCount: c.notificationList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    NotificationServiceprovider notification =
+                        c.notificationList[index];
+                    return InkWell(
+                      onTap: () {
+                        Get.to(ActiveBooking());
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            notification.data!.note! ?? "",
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 57, 57, 57)),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
       ),
     );
   }
@@ -70,7 +83,7 @@ class NotificationCard extends StatelessWidget {
         child: ListTile(
           title: Text(
             notificationTitle,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -115,18 +128,6 @@ class NotificationsList extends StatelessWidget {
           notificationMessage: "Small message",
         );
       },
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Notifications'),
-      ),
-      body: NotificationsList(),
     );
   }
 }

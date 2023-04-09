@@ -1,14 +1,39 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osar_pasar/controller/item_controller.dart';
 import 'package:osar_pasar/controller/service_provider_controller.dart';
+import 'package:osar_pasar/models/item_model.dart';
+import 'package:osar_pasar/models/service_provider.dart';
+import 'package:osar_pasar/screens/notification_page.dart';
 import 'package:osar_pasar/screens/request.dart';
+import 'package:http/http.dart' as http;
+import 'package:osar_pasar/utils/storage_helper.dart';
 import 'package:osar_pasar/widgets/custom_text_field.dart';
+import 'package:osar_pasar/widgets/home_card.dart';
 
 import '../utils/colors.dart';
+import 'home.dart';
 
 class BookingSummary extends StatelessWidget {
-  BookingSummary({super.key, required this.from, required this.to});
+  TextEditingController pickupaddressController = TextEditingController();
+  TextEditingController destinationAddressController = TextEditingController();
+  TextEditingController pickupDateController = TextEditingController();
+  TextEditingController pickUpTimeController = TextEditingController();
+
+  ServiceProvider serviceProvider;
+  BookingSummary({
+    super.key,
+    required this.from,
+    required this.to,
+    required this.serviceProvider,
+    required this.pickUpTimeController,
+    required this.destinationAddressController,
+    required this.pickupDateController,
+    required this.pickupaddressController,
+  });
   String from;
   String to;
   TextEditingController fromController = TextEditingController();
@@ -119,6 +144,26 @@ class BookingSummary extends StatelessWidget {
             minimumSize: const Size.fromHeight(50),
           ),
           onPressed: () {
+            var test = item_model(
+              itemId: itemController.selectedItems.map((element) {
+                return ItemId(id: element.id, quantity: element.itemCount);
+              }).toList(),
+              serviceProviderId: serviceProvider.id,
+              pickupAddress: pickupaddressController.text,
+              destinationAddress: destinationAddressController.text,
+              pickupDate: pickupDateController.text,
+              pickupTime: pickUpTimeController.text,
+            ).toJson();
+            print(test);
+            postOrder(
+                test: test,
+                onSuccess: () {
+                  print("error 1234");
+                },
+                onError: (message) {
+                  print("error");
+                });
+
             Get.snackbar(
               'Request Sent Successfully',
               'We will get back to you soon!',
@@ -127,13 +172,45 @@ class BookingSummary extends StatelessWidget {
               colorText: Colors.white,
             );
 
-            Get.to(
-              () => RequestScreen(),
-            );
+            Get.to(() => HomePage());
           },
           child: const Text("Send Request"),
         ),
       ),
     );
+  }
+
+  static Future<void> postOrder(
+      {required var test,
+      required Function() onSuccess,
+      required Function(String message) onError}) async {
+    try {
+      var url = Uri.parse("http://192.168.1.71:8000/api/orders/store");
+
+      var body = json.encode(test);
+
+      http.Response response = await http.post(url,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": StorageHelper.getToken()!.toString()
+          },
+          body: body);
+
+      var data = json.decode(response.body);
+
+      log("TESTING DATA =====> ${data}");
+      log("TESTING DATA =====> ${body}");
+      if (data['status']) {
+        onSuccess();
+        // print(data.toString());
+      } else {
+        onError("String message");
+      }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      onError("Sorry something went wrong. Please try again");
+    }
   }
 }

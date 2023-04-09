@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      drawer: const MyDrawer(),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),

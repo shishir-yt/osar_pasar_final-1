@@ -51,7 +51,7 @@ class ActiveBooking extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            height: 165,
+            height: 150,
             margin: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 26),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -74,10 +74,7 @@ class ActiveBooking extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    "Rs.2500",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
+
                   const SizedBox(
                     height: 10,
                   ),
@@ -89,14 +86,15 @@ class ActiveBooking extends StatelessWidget {
                     height: 10,
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        paywithKhaltiInApp();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 76, 21, 184)),
-                      child: const Text(
-                        "Pay with Khalti",
-                      )),
+                    onPressed: () {
+                      paywithKhaltiInApp();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 76, 21, 184)),
+                    child: const Text(
+                      "Pay with Khalti",
+                    ),
+                  ),
                   // Text(referenceId),
                 ],
               ),

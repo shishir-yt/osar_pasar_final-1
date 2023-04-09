@@ -144,6 +144,7 @@ class _AddressPageState extends State<AddressPage> {
               onTap: () async {
                 await showTimePicker(
                         context: context,
+                        initialEntryMode: TimePickerEntryMode.inputOnly,
                         initialTime: TimeOfDay(
                             hour: DateTime.now().hour,
                             minute: DateTime.now().hour))
@@ -555,40 +556,45 @@ class _AddressPageState extends State<AddressPage> {
               onPressed: (() => Get.to(() => BookingSummary(
                     from: pickupAddressController.text,
                     to: destinationAddressController.text,
+                    serviceProvider: widget.serviceProvider,
+                    destinationAddressController: destinationAddressController,
+                    pickupaddressController: pickupAddressController,
+                    pickupDateController: dateController,
+                    pickUpTimeController: timeController,
                   ))),
               child: const Text("Continue"),
             ),
-            SizedBox(height: 50),
+            // SizedBox(height: 50),
 
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff00183F),
-                minimumSize: const Size.fromHeight(50),
-              ),
-              onPressed: () {
-                var test = item_model(
-                  itemId: itemController.selectedItems.map((element) {
-                    return ItemId(id: element.id, quantity: element.itemCount);
-                  }).toList(),
-                  serviceProviderId: widget.serviceProvider.id,
-                  pickupAddress: pickupAddressController.text,
-                  destinationAddress: destinationAddressController.text,
-                  pickupDate: dateController.text,
-                  pickupTime: timeController.text,
-                ).toJson();
-                print(test);
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: const Color(0xff00183F),
+            //     minimumSize: const Size.fromHeight(50),
+            //   ),
+            //   onPressed: () {
+            //     var test = item_model(
+            //       itemId: itemController.selectedItems.map((element) {
+            //         return ItemId(id: element.id, quantity: element.itemCount);
+            //       }).toList(),
+            //       serviceProviderId: widget.serviceProvider.id,
+            //       pickupAddress: pickupAddressController.text,
+            //       destinationAddress: destinationAddressController.text,
+            //       pickupDate: dateController.text,
+            //       pickupTime: timeController.text,
+            //     ).toJson();
+            //     print(test);
 
-                postOrder(
-                    test: test,
-                    onSuccess: () {
-                      print("error 1234");
-                    },
-                    onError: (message) {
-                      print("error");
-                    });
-              },
-              child: Text("Testing"),
-            ),
+            //     postOrder(
+            //         test: test,
+            //         onSuccess: () {
+            //           print("error 1234");
+            //         },
+            //         onError: (message) {
+            //           print("error");
+            //         });
+            //   },
+            //   child: Text("Testing"),
+            // ),
           ],
         ),
       ),

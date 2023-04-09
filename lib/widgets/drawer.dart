@@ -5,14 +5,23 @@ import 'package:get_storage/get_storage.dart';
 import 'package:osar_pasar/screens/about.dart';
 import 'package:osar_pasar/screens/auth/login.dart';
 import 'package:osar_pasar/screens/faq.dart';
+import 'package:osar_pasar/screens/home.dart';
+import 'package:osar_pasar/screens/profile.dart';
+import 'package:osar_pasar/screens/support.dart';
 import 'package:osar_pasar/utils/storage_keys.dart';
+import '../controller/core_controller.dart';
+import '../controller/home_controller.dart';
 import '../utils/image_path.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  MyDrawer({Key? key}) : super(key: key);
+  final c = Get.put(HomeController());
+  final coreController = Get.find<CoreController>();
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(Get.context!).textTheme;
+    var theme = Theme.of(Get.context!);
     return Drawer(
       child: ListView(
         children: [
@@ -40,15 +49,14 @@ class MyDrawer extends StatelessWidget {
                     // height: 87,
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 15),
                   child: Center(
                     child: Text(
-                      "Shishir Acharya",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                      "${coreController.currentUser!.name?.capitalize}",
+                      style: textTheme.titleMedium!.copyWith(
                         fontSize: 14,
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -64,23 +72,7 @@ class MyDrawer extends StatelessWidget {
                 DrawerItem(
                   icon: Icons.person_outline_rounded,
                   label: 'Profile',
-                  onPressed: () => Get.back(),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                DrawerItem(
-                  icon: Icons.history,
-                  label: 'Pending Requests',
-                  onPressed: () {},
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                DrawerItem(
-                  icon: Icons.support_agent,
-                  label: 'Support',
-                  onPressed: () {},
+                  onPressed: () => Get.to(EditProfile()),
                 ),
                 const SizedBox(
                   height: 20,
@@ -115,9 +107,20 @@ class MyDrawer extends StatelessWidget {
                   height: 20,
                 ),
                 DrawerItem(
+                  icon: Icons.support_agent,
+                  label: 'Support',
+                  onPressed: () {
+                    Get.to(SupportPage());
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                DrawerItem(
                   icon: Icons.logout,
                   label: 'Logout',
                   onPressed: () async {
+                    _showMyDialog();
                     final box = GetStorage();
                     await box.write(StorageKey.ACCESS_TOKEN, null);
                     await box.write(StorageKey.USER, null);
@@ -164,4 +167,43 @@ class DrawerItem extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: Get.context!,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: Column(
+            children: const <Widget>[
+              Text('Are you sure you want to Logout?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text(
+              'Logout',
+              style: TextStyle(
+                  color: Colors.red, fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            onPressed: () {
+              Get.offAll(Login());
+            },
+          ),
+          TextButton(
+            child: const Text(
+              'Cancel',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
